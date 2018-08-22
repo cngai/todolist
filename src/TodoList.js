@@ -12,6 +12,7 @@ class TodoList extends Component {
 		};
 
 		this.addItem = this.addItem.bind(this);
+		this.deleteItem = this.deleteItem.bind(this);	//ensure all reference to 'this' inside deleteItem will reference correct thing
 	}
 
 	addItem(e) {
@@ -39,6 +40,18 @@ class TodoList extends Component {
 		e.preventDefault();
 	}
 
+	deleteItem(key) {
+		//create new array called filteredItems that contains everything except the item we are removing
+		var filteredItems = this.state.items.filter(function (item) {
+			return (item.key !== key);
+		});
+
+		//filtered array is set as new items property on state object
+		this.setState({
+			items: filteredItems
+		});
+	}
+
 	render() {
 		return (
 			<div className="todoListMain">
@@ -51,7 +64,8 @@ class TodoList extends Component {
 					</form>
 				</div>
 
-				<TodoItems entries={this.state.items}/>
+				<TodoItems entries={this.state.items}
+						delete={this.deleteItem}/>
 			</div>
 		);
 	}
